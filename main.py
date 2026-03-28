@@ -1,4 +1,5 @@
 from typing import List
+from datetime import datetime
 
 from banco_de_transacoes import BancoDeTransacoes
 from transacao import Transacao
@@ -7,28 +8,74 @@ def exibir_transacoes(minhas_transacoes: List['Transacao']) -> None:
     for transacao in minhas_transacoes:
         print(transacao)
 
+
+def menu():
+    print()
+    print('===== ORGANIZADOR DE FINANÇAS =====')
+    print()
+    print('1 - registrar ganho')
+    print('2 - registrar gasto')
+    print('3 - listar transações')
+    print('4 - ver saldo')
+    print('0 - sair')
+    print()
+
+
+def registrar_transacao(tipo):
+
+    valor = input('valor: ')
+
+    try:
+        valor = float(valor)
+    except ValueError:
+        print()
+        print('Valor inserido é inválido, tente novamente...')
+        return
+
+    descricao = input('descrição: ')
+    data = datetime.today().strftime('%Y-%m-%d')
+
+    transacao = Transacao(tipo, valor, descricao, data)
+    transacoes.append(transacao)
+
+    bd_transacoes.salvar_dados(transacoes)
+
+def listar_transacoes(transacoes):
+    for transacao in transacoes:
+        print(transacao)
+
+def ver_saldo(transacoes):
+    ...
+
+
 if __name__ == '__main__':
     CAMINHO_ARQUIVO = 'transacoes.json'
 
-    transacao_1 = Transacao('ganho', 3000, 'salario', '2026-03-05')
-    transacao_2 = Transacao('gasto', 1000, 'feira', '2026-03-05')
-    transacao_3 = Transacao('ganho', 500, 'freelancer', '2026-03-05')
-    transacao_4 = Transacao('gasto', 1500, 'cartão', '2026-03-05')
-
     bd_transacoes = BancoDeTransacoes(CAMINHO_ARQUIVO)
-    minhas_transacoes = bd_transacoes.carregar_dados()
-    # minhas_transacoes.append(transacao_1)
-    # minhas_transacoes.append(transacao_2)
-    # minhas_transacoes.append(transacao_3)
-    # minhas_transacoes.append(transacao_4)
+    transacoes = bd_transacoes.carregar_dados()
+    
+    comandos_menu = {
+        1: lambda: registrar_transacao('ganho'),
+        2: lambda: registrar_transacao('gasto'),
+        3: lambda: listar_transacoes(transacoes),
+        4: lambda: ver_saldo(transacoes),
+    }
 
-    minhas_transacoes.extend([
-        transacao_1,
-        transacao_2,
-        transacao_3,
-        transacao_4
-    ])
+    while True:
+        menu()
+        opcao = input('Escolha uma opção: ')
 
-    bd_transacoes.salvar_dados(minhas_transacoes)
+        if not opcao.isdigit():
+            print('Opção inválida, tente novamente...')
+            continue
 
-    exibir_transacoes(minhas_transacoes)
+        opcao = int(opcao)
+        
+        if opcao == 0:
+            print()
+            print('Saindo...')
+            print()
+            break
+
+        executa_comando = comandos_menu.get(opcao, lambda: print('Opção não existe, tente novamente...'))
+        executa_comando()
