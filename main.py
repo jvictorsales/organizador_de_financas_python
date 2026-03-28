@@ -15,7 +15,7 @@ def menu():
     print()
 
 
-def registrar_transacao(tipo):
+def registrar_transacao(tipo: str) -> None:
 
     valor = input('valor: ')
 
@@ -35,6 +35,15 @@ def registrar_transacao(tipo):
     bd_transacoes.salvar_dados(transacoes)
 
 def listar_transacoes(transacoes):
+
+    if not transacoes:
+        print()
+        print('Não há transações para exibir.')
+        return
+
+    print()
+    print('===== MINHAS TRANSAÇÕES =====')
+    print()
     for transacao in transacoes:
         print(transacao)
 

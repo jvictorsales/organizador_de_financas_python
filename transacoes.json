@@ -1,0 +1,14 @@
+[
+  {
+    "tipo": "ganho",
+    "valor": 3000.0,
+    "descricao": "salário",
+    "data": "2026-03-27"
+  },
+  {
+    "tipo": "gasto",
+    "valor": 1000.0,
+    "descricao": "feira",
+    "data": "2026-03-27"
+  }
+]
