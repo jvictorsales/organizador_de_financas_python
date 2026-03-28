@@ -1,13 +1,7 @@
-from typing import List
 from datetime import datetime
 
 from banco_de_transacoes import BancoDeTransacoes
 from transacao import Transacao
-
-def exibir_transacoes(minhas_transacoes: List['Transacao']) -> None:
-    for transacao in minhas_transacoes:
-        print(transacao)
-
 
 def menu():
     print()
